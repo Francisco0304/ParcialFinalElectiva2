@@ -8,6 +8,7 @@ import com.example.parcial.demo.repositories.PracticaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,8 +29,19 @@ public class EstudianteService {
         return estudianteRepository.findById(id).orElse(null);
     }
 
-    public Estudiante save(Estudiante estudiante, Integer id) {
-        return null;
+    public Estudiante save(Estudiante estudiante, Integer practicaId) {
+        Practica practica = practicaRepository.findById(practicaId).orElse(null);
+        if (practica == null) {
+            throw new RuntimeException("NOT EXISTS Practice");
+        }
+
+        // Asociar la práctica con el estudiante
+        if (estudiante.getPracticas() == null) {
+            estudiante.setPracticas(new ArrayList<>());
+        }
+        estudiante.getPracticas().add(practica);
+
+        return estudianteRepository.save(estudiante);
     }
 
     public void deleteById(Integer id) {

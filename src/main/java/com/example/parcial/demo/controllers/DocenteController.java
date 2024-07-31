@@ -22,7 +22,7 @@ public class DocenteController {
         try{
             List<Docente> response = docenteService.findAll();
 
-            return ResponseHandler.generateResponse("Success Ok", HttpStatus.FOUND,response);
+            return ResponseHandler.generateResponse("Success Ok", HttpStatus.OK,response);
         }catch( Exception e){
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR,null);
         }

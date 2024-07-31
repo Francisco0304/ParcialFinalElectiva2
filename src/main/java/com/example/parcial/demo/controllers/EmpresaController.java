@@ -25,17 +25,10 @@ public class EmpresaController {
         try{
             List<Empresa> response = empresaService.findAll();
 
-            return ResponseHandler.generateResponse("Success Ok", HttpStatus.FOUND,response);
+            return ResponseHandler.generateResponse("Success Ok", HttpStatus.OK,response);
         }catch( Exception e){
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR,null);
         }
-    }
-
-    @GetMapping("/{identificacion}")
-    public ResponseEntity<Empresa> getEmpresaByIdentificacion(@PathVariable String identificacion, @PathVariable Integer idPractica) {
-        Optional<Empresa> empresa = empresaService.getEmpresaByIdentificacion(identificacion);
-        return empresa.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/{idPractica}")

@@ -1,4 +1,5 @@
 package com.example.parcial.demo.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -11,12 +12,13 @@ public class Estudiante {
     private String nombre;
     private String numeroIdentificacion;
 
+    @ManyToMany
     @JoinTable(
-            name = "Inscription", // Nombre de la tabla intermedia
-            joinColumns = @JoinColumn(name = "ref_student"), // Columna de la tabla intermedia que hace referencia a Student
-            inverseJoinColumns = @JoinColumn(name = "ref_practica") // Columna de la tabla intermedia que hace referencia a Practica
+            name = "estudiante_practica",
+            joinColumns = @JoinColumn(name = "estudiante_id"),
+            inverseJoinColumns = @JoinColumn(name = "practica_id")
     )
-    @ManyToMany//(mappedBy = "Estudiante")
+    @JsonIgnore
     private List<Practica> practicas;
 
     public Estudiante(Integer id, String nombre, String numeroIdentificacion) {
@@ -53,5 +55,13 @@ public class Estudiante {
 
     public void setNumeroIdentificacion(String numeroIdentificacion) {
         this.numeroIdentificacion = numeroIdentificacion;
+    }
+
+    public List<Practica> getPracticas() {
+        return practicas;
+    }
+
+    public void setPracticas(List<Practica> practicas) {
+        this.practicas = practicas;
     }
 }

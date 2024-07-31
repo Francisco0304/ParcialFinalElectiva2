@@ -25,8 +25,8 @@ public class EmpresaService {
         return empresaRepository.findAll();
     }
 
-    public Optional<Empresa> getEmpresaByIdentificacion(String identificacion) {
-        return empresaRepository.findByIdentificacion(identificacion);
+    public List<Empresa> findEmpresasByPracticaDestino(String destino) {
+        return empresaRepository.findByPractica_Destino(destino);
     }
 
     public Empresa createEmpresa(Empresa empresa) {

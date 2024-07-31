@@ -22,7 +22,8 @@ public class Practica implements Serializable {
     @JsonIgnore
     private List<Empresa> empresas;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "practicas")
+    @JsonIgnore
     private List<Estudiante> estudiantes;
 
     public Practica() {
