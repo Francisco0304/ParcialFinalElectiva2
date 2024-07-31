@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface DocenteRepository extends JpaRepository<Docente, Integer> {
     Optional<Docente> findByIdentificacion(String identificacion);
+
+
 }

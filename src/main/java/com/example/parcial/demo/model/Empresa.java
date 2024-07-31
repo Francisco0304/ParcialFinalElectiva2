@@ -15,13 +15,11 @@ public class Empresa implements Serializable{
     private String nombre;
     private String identificacion;
 
-    @OneToMany(mappedBy = "empresa",cascade = {CascadeType.REMOVE})
-    @JsonIgnore
-    private List<Practica> practicas;
+    @ManyToOne
+    private Practica practica;
 
 
     public Empresa() {
-        practicas = new ArrayList<>();
     }
 
     // Getters y Setters
@@ -50,8 +48,11 @@ public class Empresa implements Serializable{
         this.identificacion = identificacion;
     }
 
-    public void addPractica( Practica practica ){
-        practicas.add( practica );
+    public Practica getPractica() {
+        return practica;
     }
 
+    public void setPractica(Practica practica) {
+        this.practica = practica;
+    }
 }

@@ -1,9 +1,11 @@
 package com.example.parcial.demo.services;
 
 import com.example.parcial.demo.model.Docente;
+import com.example.parcial.demo.model.Empresa;
 import com.example.parcial.demo.model.Estudiante;
 import com.example.parcial.demo.model.Practica;
 import com.example.parcial.demo.repositories.DocenteRepository;
+import com.example.parcial.demo.repositories.EmpresaRepository;
 import com.example.parcial.demo.repositories.PracticaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,11 @@ public class PracticaService {
     private PracticaRepository practicaRepository;
     @Autowired
     private DocenteRepository docenteRepository;
+
+    public List<Practica> findAll(){
+
+        return practicaRepository.findAll();
+    }
 
     /**
      * Obtiene todas las prácticas de un docente basado en su número de identificación.
@@ -47,7 +54,7 @@ public class PracticaService {
      * @param id El ID de la práctica.
      * @return La práctica asociada con el ID, o null si no existe.
      */
-    public Practica getPracticaPorId(Long id) {
+    public Practica getPracticaPorId(Integer id) {
         Optional<Practica> practica = practicaRepository.findById(id);
         return practica.orElse(null);
     }
@@ -60,23 +67,29 @@ public class PracticaService {
      */
     public Practica saveOrUpdatePractica(Practica practica, Integer docenteId) {
         Optional<Docente> docenteOpt = docenteRepository.findById(docenteId);
+
         if (docenteOpt.isPresent()) {
             Docente docente = docenteOpt.get();
-            practica.setDocente( docente );
-            docente.addPractica( practica );
+
+            practica.setDocente(docente);
+            docente.addPractica(practica); // Asocia la practica al docente
 
             return practicaRepository.save(practica);
         } else {
-            throw new RuntimeException("Docente not found");
+            if (!docenteOpt.isPresent()) {
+                throw new RuntimeException("Docente not found");
+            }
+            return null; // Aunque este código nunca se alcanza debido a las excepciones lanzadas
         }
     }
+
 
     /**
      * Elimina una práctica basada en su ID.
      *
      * @param id El ID de la práctica a eliminar.
      */
-    public void deletePractica(Long id) {
+    public void deletePractica(Integer id) {
         practicaRepository.deleteById(id);
     }
 
@@ -86,7 +99,7 @@ public class PracticaService {
      * @param id El ID de la práctica.
      * @return Lista de estudiantes que asisten a la práctica.
      */
-    public List<Estudiante> getEstudiantesPorPracticaId(Long id) {
+    public List<Estudiante> getEstudiantesPorPracticaId(Integer id) {
         Optional<Practica> practica = practicaRepository.findById(id);
         return practica.map(Practica::getEstudiantes).orElse(null);
     }

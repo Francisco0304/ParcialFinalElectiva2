@@ -20,9 +20,9 @@ public class PracticaController {
     private PracticaService practicaService;
 
     @GetMapping
-    public ResponseEntity<Object> findAll() {
+    public ResponseEntity findAll() {
         try {
-            List<Practica> response = practicaService.getPracticasPorDocente(null); // Aquí podrías ajustar para obtener todas si es necesario
+            List<Practica> response = practicaService.findAll(); // Aquí podrías ajustar para obtener todas si es necesario
             return ResponseHandler.generateResponse("Success OK", HttpStatus.OK, response);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
@@ -30,7 +30,7 @@ public class PracticaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> findById(@PathVariable Long id) {
+    public ResponseEntity<Object> findById(@PathVariable Integer id) {
         try {
             Practica practica = practicaService.getPracticaPorId(id);
             if (practica != null) {
@@ -45,10 +45,10 @@ public class PracticaController {
         }
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<Object> save(@RequestBody Practica practica, @PathVariable Integer id) {
+    @PostMapping("/{idDocente}")
+    public ResponseEntity<Object> save(@RequestBody Practica practica, @PathVariable Integer idDocente) {
         try {
-            Practica result = practicaService.saveOrUpdatePractica(practica, id);
+            Practica result = practicaService.saveOrUpdatePractica(practica, idDocente);
             if (result != null) {
                 return ResponseHandler.generateResponse("Success OK", HttpStatus.OK, result);
             }
@@ -59,7 +59,7 @@ public class PracticaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteById(@PathVariable Integer id) {
         try {
             practicaService.deletePractica(id);
             return ResponseHandler.generateResponse("Success Deleted", HttpStatus.OK, null);
@@ -69,7 +69,7 @@ public class PracticaController {
     }
 
     @GetMapping("/estudiantes/{id}")
-    public ResponseEntity<Object> findEstudiantesByPracticaId(@PathVariable Long id) {
+    public ResponseEntity<Object> findEstudiantesByPracticaId(@PathVariable Integer id) {
         try {
             List<Estudiante> estudiantes = practicaService.getEstudiantesPorPracticaId(id);
             if (estudiantes != null) {

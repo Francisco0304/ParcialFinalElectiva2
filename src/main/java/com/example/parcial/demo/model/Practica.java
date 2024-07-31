@@ -1,7 +1,9 @@
 package com.example.parcial.demo.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,27 +11,31 @@ import java.util.List;
 public class Practica implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String destino;
     private Date fechaSalida;
     private Date fechaRegreso;
     @ManyToOne
     private Docente docente;
-    @ManyToOne
-    private Empresa empresa;
+
+    @OneToMany(mappedBy = "practica",cascade = {CascadeType.REMOVE})
+    @JsonIgnore
+    private List<Empresa> empresas;
+
     @ManyToMany
     private List<Estudiante> estudiantes;
 
     public Practica() {
+        empresas = new ArrayList<>();
     }
 
     // Getters y Setters
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -65,12 +71,8 @@ public class Practica implements Serializable {
         this.docente = docente;
     }
 
-    public Empresa getEmpresa() {
-        return empresa;
-    }
-
-    public void setEmpresa(Empresa empresa) {
-        this.empresa = empresa;
+    public void addEmpresa( Empresa empresa ){
+        empresas.add( empresa );
     }
 
     public List<Estudiante> getEstudiantes() {
