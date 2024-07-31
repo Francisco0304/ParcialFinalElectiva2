@@ -52,6 +52,14 @@ public class Docente implements Serializable {
         practicas.add( practica );
     }
 
+    public List<Practica> getPracticas() {
+        return practicas;
+    }
+
+    public void setPracticas(List<Practica> practicas) {
+        this.practicas = practicas;
+    }
+
     @Override
     public String toString() {
         return "Docente{" +
